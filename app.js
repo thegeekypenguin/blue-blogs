@@ -1,5 +1,5 @@
 const express = require('express');
-
+const morgan= require('morgan');
 // express app
 const app = express();
 
@@ -10,19 +10,37 @@ app.set(`view engine`, `ejs`);  // meaning of this line is: "view engine that us
 // listen for the requests
 app.listen(3000);
 
+// Keeping all the CSS in a seperate file
+app.use(express.static(`public`));
+
+// Use of Morgan
+app.use (morgan(`dev`));
+
+// Middleware
+// app.use((req, res) => {
+//     console.log(`new request made:`);
+//     console.log(`host: `, req.hostname);
+//     console.log(`path: `, req.path);
+//     console.log(`method: `, req.method);
+//     next(); // to goto the next middleware
+
+// });
+// app.use((req, res) => {
+//     console.log(`In the next middleware: `);
+//     next(); 
+// });
+
 app.get( `/`, (req, res) => {
     const blogs = [
-        {title: `Cock finds beaches`, snippet: `But beaxches' water was not salty, huehue!`},
-        {title: `Cock finds beaches`, snippet: `But beaxches' water was not salty, huehue!`},
-        {title: `Cock finds beaches`, snippet: `But beaxches' water was not salty, huehue!`}
+        {title: `Cock finds beaches`, snippet: `But on the beaches' water was not salty, huehue!`},
+        {title: `Cock finds beaches`, snippet: `But on the beaches' water was not salty, huehue!`},
+        {title: `Cock finds beaches`, snippet: `But on the beaches' water was not salty, huehue!`},
     ];
     // res.send(`<h1>Home page</h1>`);
     // res.sendFile(`./views/index.html`, { root: __dirname});
     // since we are using view and an ejs file, we need to replace the above lines with the lines 
     // lines written below:
-    res.render(`index`, { title: `Home`, blogs}); // With this, Express will automatically find the index.ejs file from the VIEWS folder
-
-
+    res.render(`index`, { title: `Home`, blogs }); // With this, Express will automatically find the index.ejs file from the VIEWS folder
 });
 
 app.get( `/about`, (req, res) => {
